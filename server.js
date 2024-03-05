@@ -11,7 +11,7 @@ const prisma = new PrismaClient()
 
 const io = require("socket.io")(3005, {
     cors: {
-        origin : ["http://localhost:3001", "https://finalcex-b3z5.vercel.app/", "http://finalcex-b3z5.vercel.app/"],
+        origin :"https://finalcex-b3z5.vercel.app/",
         methods: ["GET", "POST"]
     }
 })
