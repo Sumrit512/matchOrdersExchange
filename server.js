@@ -11,10 +11,16 @@ const prisma = new PrismaClient()
 
 const io = require("socket.io")(3005, {
     cors: {
-        origin :"https://finalcex-b3z5.vercel.app/",
+        // origin :["http://localhost:3000", ""],
         methods: ["GET", "POST"]
     }
 })
+
+io.use((socket, next) => {
+    const origin = socket.request.headers.origin;
+    console.log(`Connection attempt from origin: ${origin}`);
+    next(); // Allow the connection to proceed
+  });
 
 const express = require("express");
 const app = express()
