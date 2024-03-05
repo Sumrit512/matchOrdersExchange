@@ -1,0 +1,229 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+enum VERIFICATIONSTATUS {
+  PENDING
+  INCOMPLETE
+  SUCCESS
+  FAILURE
+  BLOCKED
+}
+enum USERSTATUS {
+  ACTIVE
+  BLOCKED
+}
+
+model VerifiedUser{
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  userId String @unique
+  userName String?
+  phoneNumber String?
+  fullName String?
+  address String?
+  email String?
+  documentType String?
+  documentUrl String?
+  passportPicture String?
+  profilePicture String?
+  verificationStatus VERIFICATIONSTATUS @default(INCOMPLETE)
+  userStatus USERSTATUS @default(ACTIVE)
+  isVerified Boolean?
+  upiId String?
+  order Order[]
+  cryptoTransaction CryptoTransaction[]
+  cryptoAccount CryptoAccount[]
+  fiatAccount FiatAccount[]
+  fiatTransaction FiatTransaction[]
+}
+
+model SpotWallet {
+      id String @id @default(auto()) @map("_id") @db.ObjectId
+      userId String 
+      symbol String
+      name String
+      balance String
+      avgPrice String
+      logo String
+}
+
+model FiatAccount{
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+
+  currency String
+  quantity Int
+  
+  user VerifiedUser @relation(fields: [id], references: [id], onDelete: Cascade)
+}
+
+model FiatTransaction{
+  
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+
+  type String
+  quantity String
+  generatedAt DateTime @default(now())
+  status String
+  isCompleted Boolean
+  txId String
+
+   user VerifiedUser @relation(fields: [id], references: [id], onDelete: Cascade)
+
+}
+
+model CryptoAccount{
+   id String @id @default(auto()) @map("_id") @db.ObjectId
+   userId String 
+   blockchain String
+   networkName String
+   currencySymbol String
+   currencyName String
+   walletAddress String
+   privateKey String
+   generatedAt DateTime @default(now())
+   user VerifiedUser @relation(fields: [id], references: [id], onDelete: Cascade)
+}
+
+
+
+model Tokens {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  label String
+  symbol String
+  price String
+  volume String
+  change String
+  totalSupply String
+  tradable Boolean
+  createdAt  DateTime @default(now())
+  name String
+  src String
+  link String
+  dataSrc String
+}
+
+
+model Order {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  userId String
+  price String?
+  placedAt DateTime @default(now())
+  type String?
+  value String?
+  quantity String?
+  tradeSymbolFirst String?
+  tradeSymbolSecond String?
+  status String?
+  orderType String?
+  isCompleted Boolean?
+
+  user VerifiedUser @relation(fields: [id], references: [id], onDelete: Cascade)
+}
+
+model Trades {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  buyerId String
+  sellerId String
+  price String
+  createdAt DateTime @default(now())
+  value String
+  quantity String
+  tradeSymbolFirst String
+  tradeSymbolSecond String
+  status String
+  isCompleted Boolean
+}
+
+model CryptoTransaction {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  userId String
+  symbol String
+  currencyName String
+  type String
+  placedAt DateTime @default(now())
+  isCompleted Boolean
+  Quantity String
+  txHash String
+  status String
+  reciever String
+  sender String
+
+  user VerifiedUser @relation(fields: [userId], references: [userId], onDelete: Cascade)
+  
+}
+
+
+
+// model User {
+//   id String @id @default(auto()) @map("_id") @db.ObjectId
+//   name String
+//   image String?
+//   email String? @unique
+//   emailVerified DateTime?
+//   hashedPassword String?
+//   createdAt DateTime @default(now())
+//   updatedAt DateTime @updatedAt
+//   sessions Session[]
+//   accounts Account[]
+//   favoriteIds String[] @db.ObjectId
+// }
+
+// model Account {
+//   id String @id @default(auto()) @map("_id") @db.ObjectId
+//   userId             String   @db.ObjectId
+//   type               String
+//   provider           String
+//   providerAccountId  String
+//   refresh_token      String?  @db.String
+//   access_token       String?  @db.String
+//   expires_at         Int?
+//   token_type         String?
+//   scope              String?
+//   id_token           String?  @db.String
+//   session_state      String?
+
+//   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+//   @@unique([provider, providerAccountId])
+// }
+
+// model Session {
+//   id String @id @default(auto()) @map("_id") @db.ObjectId
+//   sessionToken String @unique
+//   userId String @db.ObjectId
+//   expires DateTime
+//   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+// }
+
+// model VerificationToken {
+//   id String @id @default(auto()) @map("_id") @db.ObjectId
+//   identifier String
+//   token      String   @unique
+//   expires    DateTime
+
+//   @@unique([identifier, token])
+// }
+
+// model Movie {
+//   id String @id @default(auto()) @map("_id") @db.ObjectId
+//   title String
+//   description String
+//   videoUrl String
+//   thumbnailUrl String 
+//   genre String
+//   duration String
+// }
+
+
+// well i am getting close to my dreams, by far things are going great, i mean i have generated 8k profit from trading in last 10 days, and it could be possible that by tommorow, i will be able 
+// to make 10k that's actually a good start i think, atleast better than my previouds results. after reaching the 10k mark i will start tading in 2 lots and will book profit and loss totally on the basis of that,
+// let's say i took an initial trade of 2 lots then after reaching my target, i will book the first one, and for the second one i will place a sl of half of my target and i will trail that, this is all
+// about practice to prepae myself for upcoming big lots trading rest depends on a lot of factors, but let's see where this takes me to
