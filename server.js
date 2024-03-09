@@ -16,11 +16,11 @@ const io = require("socket.io")(3005, {
     }
 })
 
-io.use((socket, next) => {
-    const origin = socket.request.headers.origin;
-    console.log(`Connection attempt from origin: ${origin}`);
-    next(); // Allow the connection to proceed
-  });
+// io.use((socket, next) => {
+//     const origin = socket.request.headers.origin;
+//     console.log(`Connection attempt from origin: ${origin}`);
+//     next(); // Allow the connection to proceed
+//   });
 
 const express = require("express");
 const app = express()
@@ -154,10 +154,11 @@ app.post('/insert', async(req, res) => {
  
   app.get('/order', async(req,res) => {
     try {
+      //  console.log(req)
         const allUsers = await prisma.order.findMany()
         
     // const datbase = await orderData.find({})
-    return res.status(200).json(allUsers).end()
+    return res.status(200).json("hit").end()
     } catch(e) {
         console.log(e)
         return res.status(500)
@@ -167,6 +168,7 @@ app.post('/insert', async(req, res) => {
 io.on("connection", async (socket) => {
     
     console.log("a user connected")
+    console.log(socket.request.headers.origin)
     socket.on("message", (message) => {
         console.log(message)
         io.emit("message", message)
@@ -199,7 +201,7 @@ const cryptoList = {
 
 const matchOrder = async () => {
     try{
-        
+        console.log("initialzed")
       const allOrder = await prisma.order.findMany({
         where: {
             isCompleted : false,
