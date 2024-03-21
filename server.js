@@ -64,6 +64,21 @@ const io = new Server(server,
         }
 );
 
+app.get('/getDomain', async(req, res) => {
+    try{
+    
+      
+      console.log(req)
+ 
+   
+    
+      return res.status(200).json(req.rawHeaders).end()
+    } catch(e) {
+      console.log(e)
+      return res.status(500).end()
+    }
+  })
+
 
 
 // id: "2",
@@ -265,7 +280,7 @@ const cryptoList = {
 
 const matchOrder = async () => {
     try{
-        console.log("initialzed")
+        // console.log("initialzed")
       const allOrder = await prisma.order.findMany({
         where: {
             isCompleted : false,
