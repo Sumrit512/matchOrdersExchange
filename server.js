@@ -9,12 +9,14 @@ const { PrismaClient } = require('@prisma/client');
 
 const prisma = new PrismaClient()
 
-const io = require("socket.io")(3006, {
+const io = require("socket.io")(3006,
+     {
     cors: {
-        origin :["http://localhost:3001"],
+        origin : '*',
         methods: ["GET", "POST"]
     }
-})
+}
+)
 
 
 
@@ -672,6 +674,6 @@ while(newBuyOrders.length > 0 && newSellorders.length > 0){
 // cron.schedule('* * * * * *', task);
 cron.schedule('* * * * * *', matchOrder);
 
-app.listen(3005, () => {
+app.listen(3007, () => {
     console.log(`server is listening`);
   });
