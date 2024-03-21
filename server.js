@@ -16,6 +16,8 @@ const io = require("socket.io")(3006, {
     }
 })
 
+
+
 // io.use((socket, next) => {
 //     const origin = socket.request.headers.origin;
 //     console.log(`Connection attempt from origin: ${origin}`);
@@ -134,7 +136,7 @@ const tokenDataSchema = new mongoose.Schema({
   const tokenData = new mongoose.model("tokenData", tokenDataSchema)
 
 
-app.use(cors());
+app.use(cors({origin : "http://localhost:3001"}));
 app.use(express.json())
 
 app.post('/insert', async(req, res) => {
