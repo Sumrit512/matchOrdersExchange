@@ -96,8 +96,8 @@ model CryptoAccount{
 
 model Tokens {
   id String @id @default(auto()) @map("_id") @db.ObjectId
-  label String
-  symbol String
+  label String 
+  symbol String 
   price String
   volume String
   change String
@@ -105,9 +105,17 @@ model Tokens {
   tradable Boolean
   createdAt  DateTime @default(now())
   name String
-  src String
-  link String
-  dataSrc String
+  src String 
+  link String 
+  dataSrc String 
+  blockchain String?
+  balanceUrl String?
+  txUrl String ?
+  contractAddress String ?
+  type String ?  
+  withdrawable Boolean?
+  depositable Boolean?
+  priceUrl String?
 }
 
 

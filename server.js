@@ -9,7 +9,7 @@ const { PrismaClient } = require('@prisma/client');
 
 const prisma = new PrismaClient()
 
-const io = require("socket.io")(3005, {
+const io = require("socket.io")(3006, {
     cors: {
         // origin :["http://localhost:3000", ""],
         methods: ["GET", "POST"]
@@ -151,12 +151,37 @@ app.post('/insert', async(req, res) => {
       return res.status(500).end()
     }
   })
+
+  const updateAll = async () => {
+   try {
+     const allTokens = await prisma.tokens.findMany()
+
+     const updateTokens = allTokens?.map(async (token) => {
+        const updating = await prisma.tokens.update({
+            where: {
+              id :   token.id
+            },
+            data : {
+                priceUrl: "set",
+                withdrawable: true,
+                depositable: true,
+                type: "coin",
+                blockchain: "set",
+                balanceUrl: "set"
+            }
+        })
+     })
+   } catch(e) {
+    console.log(e)
+   }
+  }
  
   app.get('/order', async(req,res) => {
     try {
       //  console.log(req)
-        const allUsers = await prisma.order.findMany()
+      //  const allUsers = await prisma.order.findMany()
         
+        updateAll()
     // const datbase = await orderData.find({})
     return res.status(200).json("hit").end()
     } catch(e) {
@@ -645,6 +670,6 @@ while(newBuyOrders.length > 0 && newSellorders.length > 0){
 // cron.schedule('* * * * * *', task);
 cron.schedule('* * * * * *', matchOrder);
 
-app.listen(3006, () => {
+app.listen(3005, () => {
     console.log(`server is listening`);
   });
