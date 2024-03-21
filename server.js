@@ -37,12 +37,19 @@ const {Server} = require("socket.io")
 const helmet = require("helmet");
 const cors = require("cors");
 
-const io = new Server(server, {
-    pingTimeout: 60000,
-    cors: {
-      origin: `http://localhost:3001`
-    }
-});
+const io = new Server(server, 
+    // cors: {
+    //   origin: `http://localhost:3001`
+    // },
+    { 
+        cors:
+        { origin:'http://localhost:3001',
+         methods: ['GET','POST'], 
+         credentials: true, 
+         allowEIO3: true 
+        }, 
+         transport: ['websocket'] }
+);
 
 
 
