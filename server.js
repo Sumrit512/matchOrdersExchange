@@ -9,14 +9,16 @@ const { PrismaClient } = require('@prisma/client');
 
 const prisma = new PrismaClient()
 
-const io = require("socket.io")(3006,
-     {
-    cors: {
-        origin : '*',
-        methods: ["GET", "POST"]
-    }
-}
-)
+// const io = require("socket.io")(3006,
+//      {
+//     cors: {
+//         origin : '*',
+//         methods: ["GET", "POST"]
+//     }
+// }
+// )
+
+
 
 
 
@@ -28,8 +30,21 @@ const io = require("socket.io")(3006,
 
 const express = require("express");
 const app = express()
+const {createServer} = require("http")
+const server = createServer(app);
+const {Server} = require("socket.io")
+
 const helmet = require("helmet");
 const cors = require("cors");
+
+const io = new Server(server, {
+    pingTimeout: 60000,
+    cors: {
+      origin: `http://localhost:3001`
+    }
+});
+
+
 
 // id: "2",
 // label: "trxusdt@ticker",
@@ -138,7 +153,7 @@ const tokenDataSchema = new mongoose.Schema({
   const tokenData = new mongoose.model("tokenData", tokenDataSchema)
 
 
-app.use(cors({origin : "http://localhost:3001"}));
+app.use(cors());
 app.use(express.json())
 
 app.post('/insert', async(req, res) => {
@@ -674,6 +689,7 @@ while(newBuyOrders.length > 0 && newSellorders.length > 0){
 // cron.schedule('* * * * * *', task);
 cron.schedule('* * * * * *', matchOrder);
 
-app.listen(3007, () => {
+server.listen(3006, () => {
     console.log(`server is listening`);
   });
+
