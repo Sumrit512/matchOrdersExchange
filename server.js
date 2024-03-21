@@ -44,13 +44,13 @@ const io = new Server(server,
     { 
         cors:
         { 
-            origin:['http://localhost:3001', "https://unicentralized.live/"],
+            origin:['http://localhost:3001', "https://www.unicentralized.live/", "https://unicentralized.live/", "http://www.unicentralized.live/", "https://www.unicentralized.live", "http://www.unicentralized.live"],
          methods: ['GET','POST'], 
          credentials: true, 
          allowEIO3: true ,
          handlePreflightRequest: (req, res) => {
             res.writeHead(200, {
-              "Access-Control-Allow-Origin": ["http://localhost:3001", "https://unicentralized.live/"],
+              "Access-Control-Allow-Origin":['http://localhost:3001', "https://www.unicentralized.live/", "https://unicentralized.live/", "http://www.unicentralized.live/", "https://www.unicentralized.live", "http://www.unicentralized.live"],
               "Access-Control-Allow-Methods": "GET,POST",
               "Access-Control-Allow-Credentials": true
             });
