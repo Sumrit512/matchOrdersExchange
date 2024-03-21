@@ -46,9 +46,21 @@ const io = new Server(server,
         { origin:'http://localhost:3001',
          methods: ['GET','POST'], 
          credentials: true, 
-         allowEIO3: true 
+         allowEIO3: true ,
+         handlePreflightRequest: (req, res) => {
+            res.writeHead(200, {
+              "Access-Control-Allow-Origin": "http://localhost:3001",
+              "Access-Control-Allow-Methods": "GET,POST",
+              "Access-Control-Allow-Credentials": true
+            });
+            res.end();
+          }
+         
         }, 
-         transport: ['websocket'] }
+         transport: ['websocket'] 
+        ,
+        
+        }
 );
 
 
