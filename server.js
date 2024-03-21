@@ -9,12 +9,7 @@ const { PrismaClient } = require('@prisma/client');
 
 const prisma = new PrismaClient()
 
-const io = require("socket.io")(3006, {
-    cors: {
-        // origin :["http://localhost:3000", ""],
-        methods: ["GET", "POST"]
-    }
-})
+const io = require("socket.io")(3006)
 
 // io.use((socket, next) => {
 //     const origin = socket.request.headers.origin;
