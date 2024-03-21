@@ -11,7 +11,7 @@ const prisma = new PrismaClient()
 
 const io = require("socket.io")(3006, {
     cors: {
-        origin :["http://localhost:3001", ""],
+        origin :["http://localhost:3001"],
         methods: ["GET", "POST"]
     }
 })
